@@ -39,8 +39,8 @@ contract Loteria {
     }
 
     function chooseWinner() public payable managerOnly{
-        require(participants_count<=PARTICIPANTS_LIMIT, "La cantidad de participantes debe ser de 300");
-        uint winner_pos = randomGenerator()%participants_count;
+        require(participants_count==PARTICIPANTS_LIMIT, "La cantidad de participantes debe ser de 300");
+        uint winner_pos = randomGenerator()%PARTICIPANTS_LIMIT;
         address payable winner_addr = participants[winner_pos];
         winner_addr.transfer((address(this).balance*7)/10);
         reset();
