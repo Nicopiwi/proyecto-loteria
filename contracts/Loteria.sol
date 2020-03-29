@@ -7,7 +7,6 @@ contract Loteria {
     address payable manager;
     address payable[] participants;
     uint16 constant PARTICIPANTS_LIMIT = 300;
-    uint16 participants_count;
 
 
     modifier managerOnly {
@@ -23,28 +22,27 @@ contract Loteria {
 
     constructor (address _token_contract_addr) public{
         manager = msg.sender;
-        participants_count = 0;
         token_contract_addr = _token_contract_addr;
     }
 
     //Se deben mintear los tokens en la Loteria antes de que se transfieran los tokens
     //https://ethereum.stackexchange.com/questions/65899/transfer-erc20-token-from-a-smart-contract
+    //LIMITE DE TICKETS EN UNA TRANSACCION = 100 TICKETS = 2.5M GAS
     function buy() public payable {
-        require(participants_count<PARTICIPANTS_LIMIT, "Esta lleno");
+        require(participants.length<PARTICIPANTS_LIMIT, "Esta lleno");
         require(msg.value >= 0.001 ether, "El token cuesta un finney y no es divisible");
         require(msg.value <= 0.1 ether, "No se pueden comprar mas de 100 tickets");
         require(msg.value%1 finney==0, "El ticket no es divisible");
         uint participaciones = msg.value/1 finney;
         for (uint i = 0; i < participaciones; i++){
             participants.push(msg.sender);
-            participants_count++;
         }
         LoteriaToken ltn = LoteriaToken(token_contract_addr);
         ltn.transfer(msg.sender, participaciones);
     }
 
     function chooseWinner() public payable managerOnly{
-        require(participants_count==PARTICIPANTS_LIMIT, "La cantidad de participantes debe ser de 300");
+        require(participants.length==PARTICIPANTS_LIMIT, "La cantidad de participantes debe ser de 300");
         uint winner_pos = randomGenerator()%PARTICIPANTS_LIMIT;
         address payable winner_addr = participants[winner_pos];
         winner_addr.transfer((address(this).balance*7)/10);
@@ -58,6 +56,5 @@ contract Loteria {
 
     function reset() private {
         participants = new address payable[](0);
-        participants_count = 0;
     }
 }
