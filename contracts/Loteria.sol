@@ -38,9 +38,9 @@ contract Loteria {
         for (uint i = 0; i < participaciones; i++){
             participants.push(msg.sender);
             participants_count++;
-            LoteriaToken ltn = LoteriaToken(token_contract_addr);
-            ltn.transfer(msg.sender, participaciones);
         }
+        LoteriaToken ltn = LoteriaToken(token_contract_addr);
+        ltn.transfer(msg.sender, participaciones);
     }
 
     function chooseWinner() public payable managerOnly{
