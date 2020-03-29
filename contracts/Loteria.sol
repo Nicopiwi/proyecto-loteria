@@ -31,11 +31,16 @@ contract Loteria {
     //https://ethereum.stackexchange.com/questions/65899/transfer-erc20-token-from-a-smart-contract
     function buy() public payable {
         require(participants_count<PARTICIPANTS_LIMIT, "Esta lleno");
-        require(msg.value >= 0.001 ether && msg.value%1000000000000000==0, "El token cuesta un finney y no es divisible");
-        participants.push(msg.sender);
-        participants_count++;
-        LoteriaToken ltn = LoteriaToken(token_contract_addr);
-        ltn.transfer(msg.sender, msg.value/1000000000000000);
+        require(msg.value >= 0.001 ether, "El token cuesta un finney y no es divisible");
+        require(msg.value <= 0.1 ether, "No se pueden comprar mas de 100 tickets");
+        require(msg.value%1 finney==0, "El ticket no es divisible");
+        uint participaciones = msg.value/1 finney;
+        for (uint i = 0; i < participaciones; i++){
+            participants.push(msg.sender);
+            participants_count++;
+            LoteriaToken ltn = LoteriaToken(token_contract_addr);
+            ltn.transfer(msg.sender, participaciones);
+        }
     }
 
     function chooseWinner() public payable managerOnly{
