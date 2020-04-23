@@ -1,2 +1,2 @@
 # proyecto-loteria
-Un pequeno proyecto para comenzar con desarrollo de blockchain
+Un pequeño proyecto para comenzar con desarrollo de Ethereum
