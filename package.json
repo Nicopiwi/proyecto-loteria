@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/Nicopiwi/proyecto-loteria#readme",
   "devDependencies": {
-    "@openzeppelin/contracts": "^2.5.0"
+    "@openzeppelin/contracts": "^4.4.2"
   }
 }
